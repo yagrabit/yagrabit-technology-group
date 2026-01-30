@@ -22,3 +22,11 @@ issues: []
 
 questions_for_bucho: []
 next_steps: []
+
+# スキル化候補（汎用的なパターンを発見した場合に記載）
+skill_candidate: null
+# skill_candidate の形式:
+#   name: "候補名"
+#   description: "何をするスキルか"
+#   reason: "なぜスキル化すべきか"
+#   pattern: "どのような作業パターンか"

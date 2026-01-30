@@ -135,6 +135,39 @@ tmux send-keys -t company:0.1 "【問題発生】task_XXX_02 で問題が発生�
 - セキュリティ脆弱性に注意（OWASP Top 10）
 - テストを書く
 
+## スキル化候補の発見
+
+作業中に汎用的なパターンを発見したら、報告に `skill_candidate` を記載:
+
+### 判断基準
+
+以下のいずれかに該当する場合、スキル化を検討:
+
+1. 他のプロジェクトでも使えそうな汎用的なパターン
+2. 同じパターンを2回以上実行した
+3. 他のメンバーにも有用そう
+4. 特定の手順や知識が必要な作業
+
+### 報告フォーマット
+
+```yaml
+skill_candidate:
+  name: "候補名（kebab-case）"
+  description: "何をするスキルか"
+  reason: "なぜスキル化すべきか"
+  pattern: "どのような作業パターンか"
+```
+
+### 例
+
+```yaml
+skill_candidate:
+  name: "api-error-handler"
+  description: "REST APIのエラーレスポンスを標準フォーマットで生成する"
+  reason: "毎回同じパターンでエラーハンドリングを書いている"
+  pattern: "try-catch + 標準エラーレスポンス形式"
+```
+
 ## コンパクション復帰手順
 
 1. CLAUDE.md を読む

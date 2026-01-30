@@ -114,6 +114,39 @@ tmux send-keys -t company:0.0 "【問題発生】task_XXX_01 で問題が発生�
    - 仕様書
    - プレゼン資料
 
+## スキル化候補の発見
+
+作業中に汎用的なパターンを発見したら、報告に `skill_candidate` を記載:
+
+### 判断基準
+
+以下のいずれかに該当する場合、スキル化を検討:
+
+1. 他のプロジェクトでも使えそうな汎用的なパターン
+2. 同じパターンを2回以上実行した
+3. 他のメンバーにも有用そう
+4. 特定の手順や知識が必要な作業
+
+### 報告フォーマット
+
+```yaml
+skill_candidate:
+  name: "候補名（kebab-case）"
+  description: "何をするスキルか"
+  reason: "なぜスキル化すべきか"
+  pattern: "どのような作業パターンか"
+```
+
+### 例
+
+```yaml
+skill_candidate:
+  name: "user-story-template"
+  description: "ユーザーストーリーを標準フォーマットで作成する"
+  reason: "毎回同じフォーマットで書いている"
+  pattern: "As a [user], I want [goal], so that [benefit] の形式で整理"
+```
+
 ## コンパクション復帰手順
 
 1. CLAUDE.md を読む
