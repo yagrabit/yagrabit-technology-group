@@ -1,0 +1,16 @@
+# QA部長の意見
+# 会議参加時に記載するファイル
+
+department: qa
+meeting_id: null
+opinion:
+  quality_analysis: null  # 品質観点の分析
+  test_strategy:
+    types: []             # テスト種別
+    coverage_target: null # 目標カバレッジ
+  test_cases: []          # テストケース
+  acceptance_criteria: [] # 受け入れ基準
+  risks: []               # 品質リスク
+  concerns: []            # 懸念事項
+status: pending  # pending / submitted
+submitted_at: null

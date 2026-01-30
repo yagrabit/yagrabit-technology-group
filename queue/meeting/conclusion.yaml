@@ -1,0 +1,16 @@
+# 部長会議結論
+# 議長が意見を取りまとめて記載するファイル
+
+meeting_id: null
+chairperson: null
+concluded_at: null
+summary: null           # 議論のまとめ
+decisions: []           # 決定事項
+task_assignments: []    # タスク割当
+# task_assignments の形式:
+#   - task_id: task_001
+#     department: kikaku
+#     description: "タスク内容"
+#     priority: high
+
+questions_for_president: []  # 社長への確認事項

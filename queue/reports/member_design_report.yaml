@@ -1,0 +1,24 @@
+# デザインメンバーからの報告
+# 作業完了または問題発生時に記載
+
+reporter: member_design
+reported_at: null
+task_id: null
+status: null  # completed / blocked
+summary: null
+deliverables: []
+# deliverables の形式:
+#   - type: "html/css/document"
+#     path: "path/to/file"
+#     description: "説明"
+
+design_decisions: []
+details: null
+issues: []
+# issues の形式（status: blocked の場合）:
+#   - type: "デザイン要件不明/アセット不足/技術制約"
+#     description: "問題の詳細"
+#     impact: "影響範囲"
+
+questions_for_bucho: []
+next_steps: []

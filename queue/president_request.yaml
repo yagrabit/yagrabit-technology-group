@@ -1,0 +1,22 @@
+# 社長からの依頼
+# このファイルに依頼を記載すると、部長会議が開始されます
+
+request:
+  id: null  # req_001 形式で自動採番
+  created_at: null
+  content: null
+  priority: null  # high / medium / low
+  deadline: null  # optional
+  context: null   # optional: 追加の背景情報
+
+status: waiting  # waiting / in_progress / completed
+
+# 記載例:
+# request:
+#   id: req_001
+#   created_at: "2026-01-31 10:00"
+#   content: "ユーザー登録機能を追加したい"
+#   priority: high
+#   deadline: "2026-02-07"
+#   context: "現在はゲストユーザーのみ対応している"
+# status: waiting

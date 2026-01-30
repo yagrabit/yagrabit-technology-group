@@ -1,0 +1,13 @@
+# 企画メンバーへのタスク
+# 企画部長が割り当てるファイル
+
+assigned_by: null
+assigned_at: null
+tasks: []
+# tasks の形式:
+#   - task_id: task_001
+#     description: "タスク内容"
+#     priority: high  # high / medium / low
+#     status: pending # pending / in_progress / completed / blocked
+#     details: "詳細な指示"
+#     deadline: null  # optional

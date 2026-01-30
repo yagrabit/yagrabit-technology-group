@@ -1,0 +1,21 @@
+# 企画メンバーからの報告
+# 作業完了または問題発生時に記載
+
+reporter: member_kikaku
+reported_at: null
+task_id: null
+status: null  # completed / blocked
+summary: null
+deliverables: []
+# deliverables の形式:
+#   - "成果物のパス"
+
+details: null
+issues: []
+# issues の形式（status: blocked の場合）:
+#   - type: "問題の種類"
+#     description: "問題の詳細"
+#     impact: "影響範囲"
+
+questions_for_bucho: []
+next_steps: []

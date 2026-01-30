@@ -1,0 +1,15 @@
+# 開発部長の意見
+# 会議参加時に記載するファイル
+
+department: kaihatsu
+meeting_id: null
+opinion:
+  technical_analysis: null  # 技術的な分析
+  architecture:
+    approach: null          # アーキテクチャ方針
+    technologies: []        # 使用技術
+  implementation_tasks: []  # 実装タスク
+  risks: []                 # 技術的リスク
+  dependencies: []          # 依存関係
+status: pending  # pending / submitted
+submitted_at: null

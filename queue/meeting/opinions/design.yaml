@@ -1,0 +1,15 @@
+# デザイン部長の意見
+# 会議参加時に記載するファイル
+
+department: design
+meeting_id: null
+opinion:
+  ux_analysis: null       # UX観点の分析
+  ui_approach:
+    style: null           # UIスタイルの方針
+    components: []        # 必要なコンポーネント
+  design_tasks: []        # デザインタスク
+  accessibility: []       # アクセシビリティ考慮事項
+  concerns: []            # 懸念事項
+status: pending  # pending / submitted
+submitted_at: null

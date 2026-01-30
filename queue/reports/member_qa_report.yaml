@@ -1,0 +1,37 @@
+# QAメンバーからの報告
+# 作業完了または問題発生時に記載
+
+reporter: member_qa
+reported_at: null
+task_id: null
+status: null  # completed / blocked
+summary: null
+test_results:
+  total: 0
+  passed: 0
+  failed: 0
+  skipped: 0
+deliverables: []
+# deliverables の形式:
+#   - type: "test_case/report"
+#     path: "path/to/file"
+#     description: "説明"
+
+bugs_found: []
+# bugs_found の形式:
+#   - id: "bug_001"
+#     severity: "high/medium/low"
+#     description: "バグの説明"
+#     steps_to_reproduce: []
+#     expected: "期待される動作"
+#     actual: "実際の動作"
+
+details: null
+issues: []
+# issues の形式（status: blocked の場合）:
+#   - type: "環境問題/テストデータ不足/仕様不明"
+#     description: "問題の詳細"
+#     impact: "影響範囲"
+
+questions_for_bucho: []
+next_steps: []

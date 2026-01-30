@@ -1,0 +1,29 @@
+# 開発メンバーからの報告
+# 作業完了または問題発生時に記載
+
+reporter: member_kaihatsu
+reported_at: null
+task_id: null
+status: null  # completed / blocked
+summary: null
+deliverables: []
+# deliverables の形式:
+#   - type: "code"
+#     path: "src/path/to/file.ts"
+#     description: "説明"
+
+commits: []
+# commits の形式:
+#   - hash: "abc1234"
+#     message: "コミットメッセージ"
+
+details: null
+issues: []
+# issues の形式（status: blocked の場合）:
+#   - type: "技術的問題/依存関係/不明点"
+#     description: "問題の詳細"
+#     attempted_solutions: []
+#     impact: "影響範囲"
+
+questions_for_bucho: []
+next_steps: []

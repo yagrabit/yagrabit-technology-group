@@ -1,0 +1,19 @@
+# 部長会議アジェンダ
+# 議長が作成するファイル
+
+meeting:
+  id: null          # mtg_001 形式
+  chairperson: null # kikaku / kaihatsu / design / qa
+  topic: null       # 議題
+  president_request: null  # 社長からの依頼内容
+  status: null      # waiting_opinions / in_discussion / concluded
+  round: 1          # 議論ラウンド
+  created_at: null
+
+# 各部長への指示:
+# 1. このファイルを読む
+# 2. opinions/{department}.yaml に意見を記載
+# 3. 議長に提出完了を通知
+
+# ステータス遷移:
+# waiting_opinions -> in_discussion -> concluded

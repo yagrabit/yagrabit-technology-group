@@ -1,0 +1,13 @@
+# 企画部長の意見
+# 会議参加時に記載するファイル
+
+department: kikaku
+meeting_id: null
+opinion:
+  scope_analysis: null    # 依頼のスコープ分析
+  user_stories: []        # ユーザーストーリー
+  required_tasks: []      # 企画部として必要なタスク
+  concerns: []            # 懸念事項
+  suggestions: []         # 提案
+status: pending  # pending / submitted
+submitted_at: null
