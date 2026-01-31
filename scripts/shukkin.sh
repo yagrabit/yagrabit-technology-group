@@ -74,7 +74,7 @@ start_claude() {
     echo -e "  ${BLUE}$role_name を起動中...${NC}"
 
     # Claude Code を起動（対話モード）
-    tmux send-keys -t "$target" "cd $PROJECT_DIR && claude --dangerously-skip-permissions"
+    tmux send-keys -t "$target" "cd $PROJECT_DIR && claude"
     sleep 0.3
     tmux send-keys -t "$target" Enter
 
