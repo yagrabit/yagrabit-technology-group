@@ -35,13 +35,21 @@ Claude Code の複数インスタンスを tmux で起動し、会社組織の�
 ## 必要要件
 
 - tmux
-- Claude Code CLI (`claude`)
+- Claude Code CLI (`claude`) または Codex CLI (`codex`)
 
 ## 起動方法
 
 ```bash
 ./scripts/shukkin.sh
 ```
+
+Codex CLI を使う場合:
+
+```bash
+./scripts/shukkin.sh --codex
+```
+
+※ `shukkin.sh` 実行時に `config/panes.yaml` が自動生成されます。実際のペイン識別子はこのファイルを参照してください。
 
 全員の出勤後、以下でセッションにアタッチできる:
 
@@ -76,6 +84,7 @@ tmux attach -t company
 ├── CLAUDE.md           # 全エージェント共通ルール
 ├── dashboard.md        # 現在の状況一覧
 ├── config/
+│   ├── panes.yaml      # ペイン識別子（自動生成）
 │   └── settings.yaml   # システム設定
 ├── instructions/       # ロール別指示書
 │   ├── hisho.md        # 秘書用
