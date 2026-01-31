@@ -59,7 +59,7 @@ start_claude() {
     echo -e "  ${BLUE}$role_name を起動中...${NC}"
 
     # Claude Code を起動
-    tmux send-keys -t "$session:0.$pane" "cd $PROJECT_DIR && claude --instruction-file $instruction_file" Enter
+    tmux send-keys -t "$session:0.$pane" "cd $PROJECT_DIR && claude --system-prompt \"\$(cat $instruction_file)\"" Enter
 
     sleep 1
 }
