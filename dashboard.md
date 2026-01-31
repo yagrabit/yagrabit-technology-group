@@ -6,15 +6,15 @@
 
 | 役職 | ペイン | 状態 | 現在の作業 |
 |------|--------|------|-----------|
-| 秘書 | ceo:0.0 | 待機中 | - |
-| 企画部長 | company:0.0 | 待機中 | - |
-| 開発部長 | company:0.1 | 待機中 | - |
-| デザイン部長 | company:0.2 | 待機中 | - |
-| QA部長 | company:0.3 | 待機中 | - |
-| 企画メンバー | company:0.4 | 待機中 | - |
-| 開発メンバー | company:0.5 | 待機中 | - |
-| デザインメンバー | company:0.6 | 待機中 | - |
-| QAメンバー | company:0.7 | 待機中 | - |
+| 秘書 | config/panes.yaml の ceo.secretary | 待機中 | - |
+| 企画部長 | config/panes.yaml の company.bucho_kikaku | 待機中 | - |
+| 開発部長 | config/panes.yaml の company.bucho_kaihatsu | 待機中 | - |
+| デザイン部長 | config/panes.yaml の company.bucho_design | 待機中 | - |
+| QA部長 | config/panes.yaml の company.bucho_qa | 待機中 | - |
+| 企画メンバー | config/panes.yaml の company.member_kikaku | 待機中 | - |
+| 開発メンバー | config/panes.yaml の company.member_kaihatsu | 待機中 | - |
+| デザインメンバー | config/panes.yaml の company.member_design | 待機中 | - |
+| QAメンバー | config/panes.yaml の company.member_qa | 待機中 | - |
 
 ## 進行中の依頼
 

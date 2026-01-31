@@ -29,18 +29,21 @@ tmux send-keys -t {target_pane} "通知メッセージ" Enter
 
 ### ペイン識別子
 
-CEOセッション（ceo）:
-- `ceo:0.0` - 秘書
+ペイン識別子は環境によって異なるため、`config/panes.yaml` を参照すること。
+このファイルは `shukkin.sh` 実行時に自動生成され、実際のウィンドウ番号・ペイン番号が記載される。
 
-会社セッション（company）:
-- `company:0.0` - 企画部長
-- `company:0.1` - 開発部長
-- `company:0.2` - デザイン部長
-- `company:0.3` - QA部長
-- `company:0.4` - 企画メンバー
-- `company:0.5` - 開発メンバー
-- `company:0.6` - デザインメンバー
-- `company:0.7` - QAメンバー
+send-keys を実行する前に必ず `config/panes.yaml` を読み、正しいペイン識別子を取得すること。
+
+例:
+```yaml
+# config/panes.yaml の内容例
+ceo:
+  secretary: "ceo:1.0"  # 実際の値は環境依存
+company:
+  bucho_kikaku: "company:1.0"
+  bucho_kaihatsu: "company:1.1"
+  # ...
+```
 
 ## ファイル構成
 

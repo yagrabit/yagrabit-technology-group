@@ -11,6 +11,8 @@ language:
   code_comments: "en"        # コードコメントは英語
 
 organization:
+  # 注意: 実際のペイン識別子は config/panes.yaml を参照すること
+  # 以下の pane 値は参考用であり、環境によって異なる
   secretary:
     name: "秘書"
     pane: "ceo:0.0"

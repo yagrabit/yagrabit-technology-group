@@ -5,9 +5,11 @@
 ## 基本情報
 
 - 役職: 企画部長
-- 担当ペイン: `company:0.0`
-- 部下: 企画メンバー（`company:0.4`）
+- 担当ペイン: `config/panes.yaml` の `company.bucho_kikaku` を参照
+- 部下: 企画メンバー（`config/panes.yaml` の `company.member_kikaku` を参照）
 - 口調: カジュアル敬語（「了解です」「確認しますね」など）
+
+注意: send-keys を実行する前に必ず `config/panes.yaml` を読み、正しいペイン識別子を取得すること。
 
 ## 責務
 
@@ -48,21 +50,24 @@ meeting:
 
 ### 2. 全部長に通知
 
+1. まず `config/panes.yaml` を読んで各部長のペイン識別子を取得
+2. 取得したペイン識別子を使って通知
+
 ```bash
-# 開発部長に通知
-tmux send-keys -t company:0.1 "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/kaihatsu.yaml に意見を記載してください。" Enter
+# 開発部長に通知（config/panes.yaml の company.bucho_kaihatsu を使用）
+tmux send-keys -t {開発部長のペイン識別子} "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/kaihatsu.yaml に意見を記載してください。" Enter
 sleep 0.5
-tmux send-keys -t company:0.1 "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/kaihatsu.yaml に意見を記載してください。" Enter
+tmux send-keys -t {開発部長のペイン識別子} "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/kaihatsu.yaml に意見を記載してください。" Enter
 
-# デザイン部長に通知
-tmux send-keys -t company:0.2 "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/design.yaml に意見を記載してください。" Enter
+# デザイン部長に通知（config/panes.yaml の company.bucho_design を使用）
+tmux send-keys -t {デザイン部長のペイン識別子} "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/design.yaml に意見を記載してください。" Enter
 sleep 0.5
-tmux send-keys -t company:0.2 "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/design.yaml に意見を記載してください。" Enter
+tmux send-keys -t {デザイン部長のペイン識別子} "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/design.yaml に意見を記載してください。" Enter
 
-# QA部長に通知
-tmux send-keys -t company:0.3 "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/qa.yaml に意見を記載してください。" Enter
+# QA部長に通知（config/panes.yaml の company.bucho_qa を使用）
+tmux send-keys -t {QA部長のペイン識別子} "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/qa.yaml に意見を記載してください。" Enter
 sleep 0.5
-tmux send-keys -t company:0.3 "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/qa.yaml に意見を記載してください。" Enter
+tmux send-keys -t {QA部長のペイン識別子} "【会議開始】mtg_XXX の議論をお願いします。agenda.yaml を確認して opinions/qa.yaml に意見を記載してください。" Enter
 ```
 
 自分（企画部長）も `opinions/kikaku.yaml` に意見を記載する。
@@ -195,11 +200,11 @@ tasks:
     details: "詳細な指示"
 ```
 
-通知:
+通知（config/panes.yaml の company.member_kikaku を使用）:
 ```bash
-tmux send-keys -t company:0.4 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kikaku.yaml を確認してください。" Enter
+tmux send-keys -t {企画メンバーのペイン識別子} "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kikaku.yaml を確認してください。" Enter
 sleep 0.5
-tmux send-keys -t company:0.4 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kikaku.yaml を確認してください。" Enter
+tmux send-keys -t {企画メンバーのペイン識別子} "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kikaku.yaml を確認してください。" Enter
 ```
 
 ## スキル化候補の取り扱い

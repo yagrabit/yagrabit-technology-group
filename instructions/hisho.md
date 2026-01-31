@@ -26,8 +26,10 @@
 ## 基本情報
 
 - 役職: 秘書
-- 担当ペイン: `ceo:0.0`
-- 連携先: 各部長（`company:0.0`〜`company:0.3`）
+- 担当ペイン: `config/panes.yaml` の `ceo.secretary` を参照
+- 連携先: 各部長（`config/panes.yaml` の `company.bucho_*` を参照）
+
+注意: send-keys を実行する前に必ず `config/panes.yaml` を読み、正しいペイン識別子を取得すること。
 
 ## 責務
 
@@ -41,10 +43,10 @@
 ## 議長の決定方法
 
 依頼ID（数値部分）% 4 で議長を決定:
-- 0: 企画部長（`company:0.0`）
-- 1: 開発部長（`company:0.1`）
-- 2: デザイン部長（`company:0.2`）
-- 3: QA部長（`company:0.3`）
+- 0: 企画部長（`config/panes.yaml` の `company.bucho_kikaku`）
+- 1: 開発部長（`config/panes.yaml` の `company.bucho_kaihatsu`）
+- 2: デザイン部長（`config/panes.yaml` の `company.bucho_design`）
+- 3: QA部長（`config/panes.yaml` の `company.bucho_qa`）
 
 ## ワークフロー
 
@@ -70,11 +72,15 @@ request:
 
 議長を決定し、send-keys で通知:
 
+1. まず `config/panes.yaml` を読んで議長のペイン識別子を取得
+2. 取得したペイン識別子を使って通知
+
 ```bash
-# 例: 議長が企画部長（req_001 % 4 = 1 → 開発部長）の場合
-tmux send-keys -t company:0.1 "【社長依頼】req_001: 依頼タイトル。president_request.yaml を確認し、部長会議を開始してください。" Enter
+# 例: 議長が開発部長（req_001 % 4 = 1）の場合
+# config/panes.yaml から company.bucho_kaihatsu の値を取得して使用
+tmux send-keys -t {開発部長のペイン識別子} "【社長依頼】req_001: 依頼タイトル。president_request.yaml を確認し、部長会議を開始してください。" Enter
 sleep 0.5
-tmux send-keys -t company:0.1 "【社長依頼】req_001: 依頼タイトル。president_request.yaml を確認し、部長会議を開始してください。" Enter
+tmux send-keys -t {開発部長のペイン識別子} "【社長依頼】req_001: 依頼タイトル。president_request.yaml を確認し、部長会議を開始してください。" Enter
 ```
 
 ### 3. 進捗確認
@@ -121,20 +127,24 @@ tmux send-keys -t company:0.1 "【社長依頼】req_001: 依頼タイトル。p
 4. `dashboard.md` で現在状況を確認
 5. `queue/president_request.yaml` を確認して作業を再開
 
-## ペイン識別子（参考）
+## ペイン識別子の取得方法
 
-CEOセッション（ceo）:
-- `ceo:0.0` - 秘書（自分）
+ペイン識別子は環境によって異なるため、`config/panes.yaml` から取得すること。
 
-会社セッション（company）:
-- `company:0.0` - 企画部長
-- `company:0.1` - 開発部長
-- `company:0.2` - デザイン部長
-- `company:0.3` - QA部長
-- `company:0.4` - 企画メンバー
-- `company:0.5` - 開発メンバー
-- `company:0.6` - デザインメンバー
-- `company:0.7` - QAメンバー
+```yaml
+# config/panes.yaml の構造
+ceo:
+  secretary: "ceo:X.Y"      # 秘書（自分）
+company:
+  bucho_kikaku: "company:X.Y"    # 企画部長
+  bucho_kaihatsu: "company:X.Y"  # 開発部長
+  bucho_design: "company:X.Y"    # デザイン部長
+  bucho_qa: "company:X.Y"        # QA部長
+  member_kikaku: "company:X.Y"   # 企画メンバー
+  member_kaihatsu: "company:X.Y" # 開発メンバー
+  member_design: "company:X.Y"   # デザインメンバー
+  member_qa: "company:X.Y"       # QAメンバー
+```
 
 ## 禁止事項
 
