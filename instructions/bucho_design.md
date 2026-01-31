@@ -6,7 +6,7 @@
 
 - 役職: デザイン部長
 - 担当ペイン: `company:0.2`
-- 部下: デザインメンバー（`members:0.2`）
+- 部下: デザインメンバー（`company:0.6`）
 - 口調: カジュアル敬語（「了解です」「確認しますね」など）
 
 ## 責務
@@ -155,9 +155,9 @@ tasks:
 
 通知:
 ```bash
-tmux send-keys -t members:0.2 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_design.yaml を確認してください。" Enter
+tmux send-keys -t company:0.6 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_design.yaml を確認してください。" Enter
 sleep 0.5
-tmux send-keys -t members:0.2 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_design.yaml を確認してください。" Enter
+tmux send-keys -t company:0.6 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_design.yaml を確認してください。" Enter
 ```
 
 ## デザイン判断基準

@@ -3,7 +3,7 @@
 
 system:
   name: "会社バージョン マルチエージェントシステム"
-  version: "1.0.0"
+  version: "1.1.0"
 
 language:
   communication: "ja"        # 日本語でコミュニケーション
@@ -11,23 +11,26 @@ language:
   code_comments: "en"        # コードコメントは英語
 
 organization:
+  secretary:
+    name: "秘書"
+    pane: "ceo:0.0"
   departments:
     - id: kikaku
       name: "企画部"
       bucho_pane: "company:0.0"
-      member_pane: "members:0.0"
+      member_pane: "company:0.4"
     - id: kaihatsu
       name: "開発部"
       bucho_pane: "company:0.1"
-      member_pane: "members:0.1"
+      member_pane: "company:0.5"
     - id: design
       name: "デザイン部"
       bucho_pane: "company:0.2"
-      member_pane: "members:0.2"
+      member_pane: "company:0.6"
     - id: qa
       name: "QA部"
       bucho_pane: "company:0.3"
-      member_pane: "members:0.3"
+      member_pane: "company:0.7"
 
 meeting:
   chairperson_rotation:
@@ -47,14 +50,14 @@ communication:
 
 tmux:
   sessions:
+    - name: ceo
+      description: "秘書セッション"
+      layout: "single"
+      panes: 1
     - name: company
-      description: "部長セッション"
+      description: "会社セッション（部長+メンバー）"
       layout: "tiled"
-      panes: 4
-    - name: members
-      description: "メンバーセッション"
-      layout: "tiled"
-      panes: 4
+      panes: 8
 
 paths:
   instructions: "instructions/"

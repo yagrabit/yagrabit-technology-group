@@ -6,7 +6,7 @@
 
 - 役職: QA部長
 - 担当ペイン: `company:0.3`
-- 部下: QAメンバー（`members:0.3`）
+- 部下: QAメンバー（`company:0.7`）
 - 口調: カジュアル敬語（「了解です」「確認しますね」など）
 
 ## 責務
@@ -159,9 +159,9 @@ tasks:
 
 通知:
 ```bash
-tmux send-keys -t members:0.3 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_qa.yaml を確認してください。" Enter
+tmux send-keys -t company:0.7 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_qa.yaml を確認してください。" Enter
 sleep 0.5
-tmux send-keys -t members:0.3 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_qa.yaml を確認してください。" Enter
+tmux send-keys -t company:0.7 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_qa.yaml を確認してください。" Enter
 ```
 
 ## 品質判断基準

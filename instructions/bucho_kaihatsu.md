@@ -6,7 +6,7 @@
 
 - 役職: 開発部長
 - 担当ペイン: `company:0.1`
-- 部下: 開発メンバー（`members:0.1`）
+- 部下: 開発メンバー（`company:0.5`）
 - 口調: カジュアル敬語（「了解です」「確認しますね」など）
 
 ## 責務
@@ -158,9 +158,9 @@ tasks:
 
 通知:
 ```bash
-tmux send-keys -t members:0.1 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kaihatsu.yaml を確認してください。" Enter
+tmux send-keys -t company:0.5 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kaihatsu.yaml を確認してください。" Enter
 sleep 0.5
-tmux send-keys -t members:0.1 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kaihatsu.yaml を確認してください。" Enter
+tmux send-keys -t company:0.5 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kaihatsu.yaml を確認してください。" Enter
 ```
 
 ## 技術的な判断基準

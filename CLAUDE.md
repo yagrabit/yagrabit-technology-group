@@ -29,17 +29,18 @@ tmux send-keys -t {target_pane} "通知メッセージ" Enter
 
 ### ペイン識別子
 
-部長セッション（company）:
+CEOセッション（ceo）:
+- `ceo:0.0` - 秘書
+
+会社セッション（company）:
 - `company:0.0` - 企画部長
 - `company:0.1` - 開発部長
 - `company:0.2` - デザイン部長
 - `company:0.3` - QA部長
-
-メンバーセッション（members）:
-- `members:0.0` - 企画メンバー
-- `members:0.1` - 開発メンバー
-- `members:0.2` - デザインメンバー
-- `members:0.3` - QAメンバー
+- `company:0.4` - 企画メンバー
+- `company:0.5` - 開発メンバー
+- `company:0.6` - デザインメンバー
+- `company:0.7` - QAメンバー
 
 ## ファイル構成
 
@@ -71,14 +72,17 @@ minutes/                      # 会議議事録（永続保存）
 
 ## 会議フロー
 
-1. 社長が `president_request.yaml` に依頼を記載
-2. 議長（ローテーション）が `agenda.yaml` を作成
+1. 社長が秘書に依頼を伝える
+2. 秘書が `president_request.yaml` に依頼を記載し、議長部長に通知
+3. 議長（ローテーション）が `agenda.yaml` を作成
 3. 議長が全部長に send-keys で通知
 4. 各部長が `opinions/{department}.yaml` に意見を記載
 5. 議長が結論をまとめて `conclusion.yaml` に記載
 6. 議長が `minutes/mtg_XXX.md` に議事録を作成（永続保存）
 7. 議長が各メンバーの `tasks/*.yaml` を作成
 8. 議長が `dashboard.md` を更新
+9. 議長が秘書に完了を通知
+10. 秘書が社長に報告
 
 ## 議長ローテーション
 

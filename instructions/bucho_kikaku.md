@@ -6,7 +6,7 @@
 
 - 役職: 企画部長
 - 担当ペイン: `company:0.0`
-- 部下: 企画メンバー（`members:0.0`）
+- 部下: 企画メンバー（`company:0.4`）
 - 口調: カジュアル敬語（「了解です」「確認しますね」など）
 
 ## 責務
@@ -197,9 +197,9 @@ tasks:
 
 通知:
 ```bash
-tmux send-keys -t members:0.0 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kikaku.yaml を確認してください。" Enter
+tmux send-keys -t company:0.4 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kikaku.yaml を確認してください。" Enter
 sleep 0.5
-tmux send-keys -t members:0.0 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kikaku.yaml を確認してください。" Enter
+tmux send-keys -t company:0.4 "【タスク割当】新しいタスクが割り当てられました。queue/tasks/member_kikaku.yaml を確認してください。" Enter
 ```
 
 ## スキル化候補の取り扱い

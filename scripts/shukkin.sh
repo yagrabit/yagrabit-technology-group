@@ -49,27 +49,6 @@ check_session() {
     return 0
 }
 
-# セッション作成関数
-create_session() {
-    local session_name=$1
-    local -n panes=$2  # 配列を参照渡し
-
-    echo -e "${BLUE}セッション '$session_name' を作成中...${NC}"
-
-    # セッション作成（最初のペインも同時に作成される）
-    tmux new-session -d -s "$session_name" -c "$PROJECT_DIR"
-
-    # 残りの3ペインを作成
-    tmux split-window -t "$session_name:0" -h -c "$PROJECT_DIR"
-    tmux split-window -t "$session_name:0.0" -v -c "$PROJECT_DIR"
-    tmux split-window -t "$session_name:0.1" -v -c "$PROJECT_DIR"
-
-    # レイアウトを整える（2x2グリッド）
-    tmux select-layout -t "$session_name:0" tiled
-
-    echo -e "${GREEN}セッション '$session_name' を作成しました${NC}"
-}
-
 # Claude起動関数
 start_claude() {
     local session=$1
@@ -87,29 +66,55 @@ start_claude() {
 
 # メイン処理
 echo ""
-echo -e "${BLUE}=== 部長セッション (company) ===${NC}"
+echo -e "${BLUE}=== CEOセッション (ceo) ===${NC}"
+
+if check_session "ceo"; then
+    echo -e "${BLUE}セッション 'ceo' を作成中...${NC}"
+
+    # セッション作成（秘書専用、1ペイン）
+    tmux new-session -d -s ceo -c "$PROJECT_DIR"
+
+    echo -e "${GREEN}セッション 'ceo' を作成しました${NC}"
+
+    echo "秘書を起動します..."
+    start_claude "ceo" 0 "instructions/hisho.md" "秘書"
+fi
+
+echo ""
+echo -e "${BLUE}=== 会社セッション (company) ===${NC}"
 
 if check_session "company"; then
-    create_session "company" dummy
+    echo -e "${BLUE}セッション 'company' を作成中...${NC}"
+
+    # セッション作成（8ペイン、2×4グリッド）
+    tmux new-session -d -s company -c "$PROJECT_DIR"
+
+    # 横4分割（最初に3回水平分割して4列作成）
+    tmux split-window -h -t company:0 -c "$PROJECT_DIR"
+    tmux split-window -h -t company:0.0 -c "$PROJECT_DIR"
+    tmux split-window -h -t company:0.2 -c "$PROJECT_DIR"
+
+    # 各列を縦分割（4列を各2行に）
+    for i in 0 1 2 3; do
+        tmux split-window -v -t "company:0.$i" -c "$PROJECT_DIR"
+    done
+
+    # レイアウトを整える（tiled = 均等配置）
+    tmux select-layout -t company:0 tiled
+
+    echo -e "${GREEN}セッション 'company' を作成しました${NC}"
 
     echo "部長陣を起動します..."
     start_claude "company" 0 "instructions/bucho_kikaku.md" "企画部長"
     start_claude "company" 1 "instructions/bucho_kaihatsu.md" "開発部長"
     start_claude "company" 2 "instructions/bucho_design.md" "デザイン部長"
     start_claude "company" 3 "instructions/bucho_qa.md" "QA部長"
-fi
-
-echo ""
-echo -e "${BLUE}=== メンバーセッション (members) ===${NC}"
-
-if check_session "members"; then
-    create_session "members" dummy
 
     echo "メンバー陣を起動します..."
-    start_claude "members" 0 "instructions/member_kikaku.md" "企画メンバー"
-    start_claude "members" 1 "instructions/member_kaihatsu.md" "開発メンバー"
-    start_claude "members" 2 "instructions/member_design.md" "デザインメンバー"
-    start_claude "members" 3 "instructions/member_qa.md" "QAメンバー"
+    start_claude "company" 4 "instructions/member_kikaku.md" "企画メンバー"
+    start_claude "company" 5 "instructions/member_kaihatsu.md" "開発メンバー"
+    start_claude "company" 6 "instructions/member_design.md" "デザインメンバー"
+    start_claude "company" 7 "instructions/member_qa.md" "QAメンバー"
 fi
 
 echo ""
@@ -118,22 +123,31 @@ echo -e "${GREEN}全員の出勤が完了しました${NC}"
 echo "========================================"
 echo ""
 echo "セッション一覧:"
-echo "  - company  : 部長セッション (tmux attach -t company)"
-echo "  - members  : メンバーセッション (tmux attach -t members)"
+echo "  - ceo     : 秘書セッション (tmux attach -t ceo)"
+echo "  - company : 会社セッション (tmux attach -t company)"
 echo ""
 echo "ペイン構成:"
-echo "  ┌─────────┬─────────┐"
-echo "  │  0.0    │  0.1    │"
-echo "  │(企画)   │(開発)   │"
-echo "  ├─────────┼─────────┤"
-echo "  │  0.2    │  0.3    │"
-echo "  │(デザイン)│(QA)     │"
-echo "  └─────────┴─────────┘"
+echo ""
+echo "  [ceo セッション - 1ペイン]"
+echo "  ┌─────────────────────────┐"
+echo "  │  0.0 秘書               │"
+echo "  └─────────────────────────┘"
+echo ""
+echo "  [company セッション - 8ペイン (2×4グリッド)]"
+echo "  ┌─────────┬─────────┬──────────┬─────────┐"
+echo "  │  0.0    │  0.1    │  0.2     │  0.3    │"
+echo "  │(企画部長)│(開発部長)│(デザイン │(QA部長) │"
+echo "  │         │         │ 部長)    │         │"
+echo "  ├─────────┼─────────┼──────────┼─────────┤"
+echo "  │  0.4    │  0.5    │  0.6     │  0.7    │"
+echo "  │(企画    │(開発    │(デザイン │(QA      │"
+echo "  │ メンバー)│ メンバー)│ メンバー)│ メンバー)│"
+echo "  └─────────┴─────────┴──────────┴─────────┘"
 echo ""
 echo "使い方:"
-echo "  1. tmux attach -t company で部長セッションにアタッチ"
-echo "  2. queue/president_request.yaml に依頼を記載"
-echo "  3. 議長に通知を送信"
+echo "  1. tmux attach -t ceo で秘書セッションにアタッチ"
+echo "  2. 秘書に依頼内容を伝える"
+echo "  3. 秘書が部長会議を手配し、完了を報告"
 echo ""
 echo "議長ローテーション (依頼ID % 4):"
 echo "  0: 企画部長 (company:0.0)"
