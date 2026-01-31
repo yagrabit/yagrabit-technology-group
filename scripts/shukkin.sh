@@ -118,9 +118,17 @@ if check_session "company"; then
     COMPANY_WINDOW=$(get_first_window "company")
     COMPANY_TARGET="company:$COMPANY_WINDOW"
 
-    # 8ペインを作成（1つ目は既にあるので7回split）
-    for i in {1..7}; do
-        tmux split-window -t "$COMPANY_TARGET" -c "$PROJECT_DIR"
+    # 2x4グリッド作成
+    # まず水平に4分割（4列作成）
+    tmux split-window -h -t "$COMPANY_TARGET" -c "$PROJECT_DIR"
+    tmux split-window -h -t "$COMPANY_TARGET" -c "$PROJECT_DIR"
+    tmux split-window -h -t "$COMPANY_TARGET" -c "$PROJECT_DIR"
+    tmux select-layout -t "$COMPANY_TARGET" even-horizontal
+
+    # 各ペインを縦に分割（計8ペイン）
+    # ペインリストを取得して各ペインを縦分割
+    for pane_id in $(tmux list-panes -t "$COMPANY_TARGET" -F '#{pane_id}'); do
+        tmux split-window -v -t "$pane_id" -c "$PROJECT_DIR"
     done
 
     # レイアウトを整える（tiled = 均等配置）
