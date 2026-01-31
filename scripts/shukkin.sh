@@ -58,8 +58,17 @@ start_claude() {
 
     echo -e "  ${BLUE}$role_name を起動中...${NC}"
 
-    # Claude Code を起動
-    tmux send-keys -t "$session:0.$pane" "cd $PROJECT_DIR && claude --system-prompt \"\$(cat $instruction_file)\"" Enter
+    # Claude Code を起動（対話モード）
+    tmux send-keys -t "$session:0.$pane" "cd $PROJECT_DIR && claude --dangerously-skip-permissions"
+    sleep 0.3
+    tmux send-keys -t "$session:0.$pane" Enter
+
+    sleep 2  # Claude起動を待つ
+
+    # 指示書を読ませるコマンドを送信
+    tmux send-keys -t "$session:0.$pane" "$instruction_file を読んで役割を理解してください。"
+    sleep 0.3
+    tmux send-keys -t "$session:0.$pane" Enter
 
     sleep 1
 }
