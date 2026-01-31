@@ -115,33 +115,32 @@ if check_session "company"; then
 
     # 最初のウィンドウ番号を取得
     COMPANY_WINDOW=$(get_first_window "company")
+    COMPANY_TARGET="company:$COMPANY_WINDOW"
 
-    # 横4分割（最初に3回水平分割して4列作成）
-    tmux split-window -h -t "company:$COMPANY_WINDOW" -c "$PROJECT_DIR"
-    tmux split-window -h -t "company:$COMPANY_WINDOW.0" -c "$PROJECT_DIR"
-    tmux split-window -h -t "company:$COMPANY_WINDOW.2" -c "$PROJECT_DIR"
-
-    # 各列を縦分割（4列を各2行に）
-    for i in 0 1 2 3; do
-        tmux split-window -v -t "company:$COMPANY_WINDOW.$i" -c "$PROJECT_DIR"
+    # 8ペインを作成（1つ目は既にあるので7回split）
+    for i in {1..7}; do
+        tmux split-window -t "$COMPANY_TARGET" -c "$PROJECT_DIR"
     done
 
     # レイアウトを整える（tiled = 均等配置）
-    tmux select-layout -t "company:$COMPANY_WINDOW" tiled
+    tmux select-layout -t "$COMPANY_TARGET" tiled
 
     echo -e "${GREEN}セッション 'company' を作成しました${NC}"
 
+    # ペイン番号のリストを取得（pane-base-indexに依存しない）
+    PANES=($(tmux list-panes -t "$COMPANY_TARGET" -F '#{pane_index}'))
+
     echo "部長陣を起動します..."
-    start_claude "company" 0 "instructions/bucho_kikaku.md" "企画部長"
-    start_claude "company" 1 "instructions/bucho_kaihatsu.md" "開発部長"
-    start_claude "company" 2 "instructions/bucho_design.md" "デザイン部長"
-    start_claude "company" 3 "instructions/bucho_qa.md" "QA部長"
+    start_claude "company" "${PANES[0]}" "instructions/bucho_kikaku.md" "企画部長"
+    start_claude "company" "${PANES[1]}" "instructions/bucho_kaihatsu.md" "開発部長"
+    start_claude "company" "${PANES[2]}" "instructions/bucho_design.md" "デザイン部長"
+    start_claude "company" "${PANES[3]}" "instructions/bucho_qa.md" "QA部長"
 
     echo "メンバー陣を起動します..."
-    start_claude "company" 4 "instructions/member_kikaku.md" "企画メンバー"
-    start_claude "company" 5 "instructions/member_kaihatsu.md" "開発メンバー"
-    start_claude "company" 6 "instructions/member_design.md" "デザインメンバー"
-    start_claude "company" 7 "instructions/member_qa.md" "QAメンバー"
+    start_claude "company" "${PANES[4]}" "instructions/member_kikaku.md" "企画メンバー"
+    start_claude "company" "${PANES[5]}" "instructions/member_kaihatsu.md" "開発メンバー"
+    start_claude "company" "${PANES[6]}" "instructions/member_design.md" "デザインメンバー"
+    start_claude "company" "${PANES[7]}" "instructions/member_qa.md" "QAメンバー"
 fi
 
 echo ""
