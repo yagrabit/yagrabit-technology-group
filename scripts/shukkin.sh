@@ -73,19 +73,12 @@ start_claude() {
 
     echo -e "  ${BLUE}$role_name を起動中...${NC}"
 
-    # Claude Code を起動（対話モード）
-    tmux send-keys -t "$target" "cd $PROJECT_DIR && claude"
+    # Claude Code を起動（対話モード、最初のプロンプトを引数で渡す）
+    tmux send-keys -t "$target" "cd $PROJECT_DIR && claude \"$instruction_file を読んで役割を理解してください。\""
     sleep 0.3
     tmux send-keys -t "$target" Enter
 
-    sleep 2  # Claude起動を待つ
-
-    # 指示書を読ませるコマンドを送信
-    tmux send-keys -t "$target" "$instruction_file を読んで役割を理解してください。"
-    sleep 0.3
-    tmux send-keys -t "$target" Enter
-
-    sleep 1
+    sleep 3  # Claude起動と初期プロンプト処理を待つ
 }
 
 # メイン処理
