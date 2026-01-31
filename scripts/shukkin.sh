@@ -96,7 +96,7 @@ if check_session "ceo"; then
     echo -e "${BLUE}セッション 'ceo' を作成中...${NC}"
 
     # セッション作成（秘書専用、1ペイン）
-    tmux new-session -d -s ceo -c "$PROJECT_DIR"
+    tmux new-session -d -s ceo -x 200 -y 50 -c "$PROJECT_DIR"
 
     echo -e "${GREEN}セッション 'ceo' を作成しました${NC}"
 
@@ -111,7 +111,8 @@ if check_session "company"; then
     echo -e "${BLUE}セッション 'company' を作成中...${NC}"
 
     # セッション作成（8ペイン、2×4グリッド）
-    tmux new-session -d -s company -c "$PROJECT_DIR"
+    # -x -y でサイズを指定（8ペイン分のスペース確保）
+    tmux new-session -d -s company -x 300 -y 80 -c "$PROJECT_DIR"
 
     # 最初のウィンドウ番号を取得
     COMPANY_WINDOW=$(get_first_window "company")
