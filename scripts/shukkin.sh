@@ -49,26 +49,33 @@ check_session() {
     return 0
 }
 
+# 最初のウィンドウ番号を取得する関数
+get_first_window() {
+    local session=$1
+    tmux list-windows -t "$session" -F '#{window_index}' | head -1
+}
+
 # Claude起動関数
 start_claude() {
     local session=$1
     local pane=$2
     local instruction_file=$3
     local role_name=$4
+    local window=$(get_first_window "$session")
 
     echo -e "  ${BLUE}$role_name を起動中...${NC}"
 
     # Claude Code を起動（対話モード）
-    tmux send-keys -t "$session:0.$pane" "cd $PROJECT_DIR && claude --dangerously-skip-permissions"
+    tmux send-keys -t "$session:$window.$pane" "cd $PROJECT_DIR && claude --dangerously-skip-permissions"
     sleep 0.3
-    tmux send-keys -t "$session:0.$pane" Enter
+    tmux send-keys -t "$session:$window.$pane" Enter
 
     sleep 2  # Claude起動を待つ
 
     # 指示書を読ませるコマンドを送信
-    tmux send-keys -t "$session:0.$pane" "$instruction_file を読んで役割を理解してください。"
+    tmux send-keys -t "$session:$window.$pane" "$instruction_file を読んで役割を理解してください。"
     sleep 0.3
-    tmux send-keys -t "$session:0.$pane" Enter
+    tmux send-keys -t "$session:$window.$pane" Enter
 
     sleep 1
 }
@@ -98,18 +105,21 @@ if check_session "company"; then
     # セッション作成（8ペイン、2×4グリッド）
     tmux new-session -d -s company -c "$PROJECT_DIR"
 
+    # 最初のウィンドウ番号を取得
+    COMPANY_WINDOW=$(get_first_window "company")
+
     # 横4分割（最初に3回水平分割して4列作成）
-    tmux split-window -h -t company:0 -c "$PROJECT_DIR"
-    tmux split-window -h -t company:0.0 -c "$PROJECT_DIR"
-    tmux split-window -h -t company:0.2 -c "$PROJECT_DIR"
+    tmux split-window -h -t "company:$COMPANY_WINDOW" -c "$PROJECT_DIR"
+    tmux split-window -h -t "company:$COMPANY_WINDOW.0" -c "$PROJECT_DIR"
+    tmux split-window -h -t "company:$COMPANY_WINDOW.2" -c "$PROJECT_DIR"
 
     # 各列を縦分割（4列を各2行に）
     for i in 0 1 2 3; do
-        tmux split-window -v -t "company:0.$i" -c "$PROJECT_DIR"
+        tmux split-window -v -t "company:$COMPANY_WINDOW.$i" -c "$PROJECT_DIR"
     done
 
     # レイアウトを整える（tiled = 均等配置）
-    tmux select-layout -t company:0 tiled
+    tmux select-layout -t "company:$COMPANY_WINDOW" tiled
 
     echo -e "${GREEN}セッション 'company' を作成しました${NC}"
 
