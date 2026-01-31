@@ -1,6 +1,6 @@
 #!/bin/bash
 # 会社マルチエージェントシステム 出勤スクリプト
-# Usage: ./scripts/shukkin.sh
+# Usage: ./scripts/shukkin.sh [--codex]
 
 set -e
 
@@ -12,6 +12,27 @@ echo "  会社マルチエージェントシステム"
 echo "  出勤スクリプト"
 echo "========================================"
 echo ""
+
+# 起動CLIの選択（デフォルト: claude）
+AGENT_CLI="claude"
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --codex)
+            AGENT_CLI="codex"
+            shift
+            ;;
+        -h|--help)
+            echo "Usage: $0 [--codex]"
+            echo "  --codex  Codex CLI を使用して起動します (デフォルト: claude)"
+            exit 0
+            ;;
+        *)
+            echo -e "${RED}不明なオプション: $1${NC}"
+            echo "Usage: $0 [--codex]"
+            exit 1
+            ;;
+    esac
+done
 
 # カラー定義
 RED='\033[0;31m'
@@ -26,9 +47,9 @@ if ! command -v tmux &> /dev/null; then
     exit 1
 fi
 
-# claude がインストールされているか確認
-if ! command -v claude &> /dev/null; then
-    echo -e "${RED}エラー: claude CLI がインストールされていません${NC}"
+# CLI がインストールされているか確認
+if ! command -v "$AGENT_CLI" &> /dev/null; then
+    echo -e "${RED}エラー: ${AGENT_CLI} CLI がインストールされていません${NC}"
     exit 1
 fi
 
@@ -55,9 +76,9 @@ get_first_window() {
     tmux list-windows -t "$session" -F '#{window_index}' | head -1
 }
 
-# Claude起動関数
+# エージェント起動関数
 # pane引数が空または"-"の場合はペイン指定を省略（1ペインのセッション用）
-start_claude() {
+start_agent() {
     local session=$1
     local pane=$2
     local instruction_file=$3
@@ -71,14 +92,14 @@ start_claude() {
         target="$session:$window.$pane"
     fi
 
-    echo -e "  ${BLUE}$role_name を起動中...${NC}"
+    echo -e "  ${BLUE}$role_name を起動中 (${AGENT_CLI})...${NC}"
 
-    # Claude Code を起動（対話モード、最初のプロンプトを引数で渡す）
-    tmux send-keys -t "$target" "cd $PROJECT_DIR && claude \"$instruction_file を読んで役割を理解してください。\""
+    # エージェントCLIを起動（対話モード、最初のプロンプトを引数で渡す）
+    tmux send-keys -t "$target" "cd $PROJECT_DIR && $AGENT_CLI \"$instruction_file を読んで役割を理解してください。\""
     sleep 0.3
     tmux send-keys -t "$target" Enter
 
-    sleep 3  # Claude起動と初期プロンプト処理を待つ
+    sleep 3  # CLI起動と初期プロンプト処理を待つ
 }
 
 # メイン処理
@@ -94,7 +115,7 @@ if check_session "ceo"; then
     echo -e "${GREEN}セッション 'ceo' を作成しました${NC}"
 
     echo "秘書を起動します..."
-    start_claude "ceo" "-" "instructions/hisho.md" "秘書"
+    start_agent "ceo" "-" "instructions/hisho.md" "秘書"
 fi
 
 echo ""
@@ -133,16 +154,16 @@ if check_session "company"; then
     PANES=($(tmux list-panes -t "$COMPANY_TARGET" -F '#{pane_index}'))
 
     echo "部長陣を起動します..."
-    start_claude "company" "${PANES[0]}" "instructions/bucho_kikaku.md" "企画部長"
-    start_claude "company" "${PANES[1]}" "instructions/bucho_kaihatsu.md" "開発部長"
-    start_claude "company" "${PANES[2]}" "instructions/bucho_design.md" "デザイン部長"
-    start_claude "company" "${PANES[3]}" "instructions/bucho_qa.md" "QA部長"
+    start_agent "company" "${PANES[0]}" "instructions/bucho_kikaku.md" "企画部長"
+    start_agent "company" "${PANES[1]}" "instructions/bucho_kaihatsu.md" "開発部長"
+    start_agent "company" "${PANES[2]}" "instructions/bucho_design.md" "デザイン部長"
+    start_agent "company" "${PANES[3]}" "instructions/bucho_qa.md" "QA部長"
 
     echo "メンバー陣を起動します..."
-    start_claude "company" "${PANES[4]}" "instructions/member_kikaku.md" "企画メンバー"
-    start_claude "company" "${PANES[5]}" "instructions/member_kaihatsu.md" "開発メンバー"
-    start_claude "company" "${PANES[6]}" "instructions/member_design.md" "デザインメンバー"
-    start_claude "company" "${PANES[7]}" "instructions/member_qa.md" "QAメンバー"
+    start_agent "company" "${PANES[4]}" "instructions/member_kikaku.md" "企画メンバー"
+    start_agent "company" "${PANES[5]}" "instructions/member_kaihatsu.md" "開発メンバー"
+    start_agent "company" "${PANES[6]}" "instructions/member_design.md" "デザインメンバー"
+    start_agent "company" "${PANES[7]}" "instructions/member_qa.md" "QAメンバー"
 fi
 
 echo ""
@@ -182,4 +203,34 @@ echo "  0: 企画部長 (company:0.0)"
 echo "  1: 開発部長 (company:0.1)"
 echo "  2: デザイン部長 (company:0.2)"
 echo "  3: QA部長 (company:0.3)"
+echo ""
+
+# ペイン情報をconfig/panes.yamlに出力
+echo -e "${BLUE}ペイン情報を config/panes.yaml に出力中...${NC}"
+
+CEO_WINDOW=$(get_first_window "ceo")
+CEO_PANE=$(tmux list-panes -t "ceo:$CEO_WINDOW" -F '#{pane_index}' | head -1)
+
+cat > "$PROJECT_DIR/config/panes.yaml" << EOF
+# ペイン識別子設定（自動生成）
+# このファイルは shukkin.sh によって自動生成されます
+# 手動で編集しないでください
+
+ceo:
+  window: $CEO_WINDOW
+  secretary: "ceo:$CEO_WINDOW.$CEO_PANE"
+
+company:
+  window: $COMPANY_WINDOW
+  bucho_kikaku: "company:$COMPANY_WINDOW.${PANES[0]}"
+  bucho_kaihatsu: "company:$COMPANY_WINDOW.${PANES[1]}"
+  bucho_design: "company:$COMPANY_WINDOW.${PANES[2]}"
+  bucho_qa: "company:$COMPANY_WINDOW.${PANES[3]}"
+  member_kikaku: "company:$COMPANY_WINDOW.${PANES[4]}"
+  member_kaihatsu: "company:$COMPANY_WINDOW.${PANES[5]}"
+  member_design: "company:$COMPANY_WINDOW.${PANES[6]}"
+  member_qa: "company:$COMPANY_WINDOW.${PANES[7]}"
+EOF
+
+echo -e "${GREEN}config/panes.yaml を生成しました${NC}"
 echo ""
