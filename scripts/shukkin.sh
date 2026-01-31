@@ -56,26 +56,34 @@ get_first_window() {
 }
 
 # Claude起動関数
+# pane引数が空または"-"の場合はペイン指定を省略（1ペインのセッション用）
 start_claude() {
     local session=$1
     local pane=$2
     local instruction_file=$3
     local role_name=$4
     local window=$(get_first_window "$session")
+    local target
+
+    if [[ -z "$pane" || "$pane" == "-" ]]; then
+        target="$session:$window"
+    else
+        target="$session:$window.$pane"
+    fi
 
     echo -e "  ${BLUE}$role_name を起動中...${NC}"
 
     # Claude Code を起動（対話モード）
-    tmux send-keys -t "$session:$window.$pane" "cd $PROJECT_DIR && claude --dangerously-skip-permissions"
+    tmux send-keys -t "$target" "cd $PROJECT_DIR && claude --dangerously-skip-permissions"
     sleep 0.3
-    tmux send-keys -t "$session:$window.$pane" Enter
+    tmux send-keys -t "$target" Enter
 
     sleep 2  # Claude起動を待つ
 
     # 指示書を読ませるコマンドを送信
-    tmux send-keys -t "$session:$window.$pane" "$instruction_file を読んで役割を理解してください。"
+    tmux send-keys -t "$target" "$instruction_file を読んで役割を理解してください。"
     sleep 0.3
-    tmux send-keys -t "$session:$window.$pane" Enter
+    tmux send-keys -t "$target" Enter
 
     sleep 1
 }
@@ -93,7 +101,7 @@ if check_session "ceo"; then
     echo -e "${GREEN}セッション 'ceo' を作成しました${NC}"
 
     echo "秘書を起動します..."
-    start_claude "ceo" 0 "instructions/hisho.md" "秘書"
+    start_claude "ceo" "-" "instructions/hisho.md" "秘書"
 fi
 
 echo ""
